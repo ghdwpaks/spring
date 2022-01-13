@@ -1,0 +1,61 @@
+ 
+https://gardentree.tistory.com/148
+
+으로부터 발췌
+
+eclipse 에서 sts 를 적용(install) 하는 맥락이 아닌,
+
+sts 사이트에서 받은 'spring-tool-suite-4-4.13.0.RELEASE-e4.22.0-win32.win32.x86_64.self-extracting.jar' 파일을 받아서 실행시켜서 적용(install)하는 방식으로 진행됐습니다.
+
+
+SpringToolSuite4.ini 파일 내용중에
+
+-startup
+plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.2.400.v20211117-0650
+-product
+org.springframework.boot.ide.branding.sts4
+--launcher.defaultAction
+openFile
+-vm
+plugins/org.eclipse.justj.openjdk.hotspot.jre.full.win32.x86_64_17.0.1.v20211116-1657/jre/bin
+-vmargs
+-Dosgi.requiredJavaVersion=11
+-Dosgi.dataAreaRequiresExplicitInit=true
+-Xms256m
+-Xmx2048m
+--illegal-access=permit
+--add-modules=ALL-SYSTEM
+
+
+이렇게 설정되어있던 내용을
+
+-startup
+plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar
+--launcher.library
+plugins/org.eclipse.equinox.launcher.win32.win32.x86_64_1.2.400.v20211117-0650
+-product
+org.springframework.boot.ide.branding.sts4
+--launcher.defaultAction
+openFile
+-vm
+C:\Program Files\Java\jdk-11.0.12\bin\javaw.exe
+-vmargs
+-Dosgi.requiredJavaVersion=11
+-Dosgi.dataAreaRequiresExplicitInit=true
+-Xms256m
+-Xmx2048m
+--illegal-access=permit
+--add-modules=ALL-SYSTEM
+
+이렇게 바꿨습니다.
+
+
+-vm
+C:\Program Files\Java\jdk-11.0.12\bin\javaw.exe
+jdk 11버전의 바이너리 파일 끝에 javaw.exe 를 추가했습니다.
+
+
+
+
