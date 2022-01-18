@@ -1,0 +1,147 @@
+이 문서는 여태까지 한 maven (또는 매이븐) 에 관한 행동 및 오류해결등을 서술한 문서입니다.
+
+https://maven.apache.org/download.cgi
+    으로 접속해서
+
+    바이너리 압축 기록(Binary zip archive)중에서
+apache-maven-3.8.4-bin.zip
+    을 선택해서 받아주고 실습 파일로 가져와서 압축을 풀어준다
+
+
+    실습 파일은 
+C:\workspace\spring\
+    에 있으며 이번 압축 파일의 경로는
+
+C:\workspace\spring\apache-maven-3.8.4-bin.zip 이다
+
+    압축을 풀어주면
+C:\workspace\spring\apache-maven-3.8.4
+    이러한 폴더가 생긴다.
+
+시스템 환경 변수에다가 mvn 의 bin 경로를 지정해줘야한다.
+    '시스템 환경 변수 편집'에 들어가서
+    '환경 변수' 안에서
+    '시스템 변수(S)' 안에, 변수 이름이
+    'Path'로 되어있는것을 누르고, 편집 버튼을 누른다.
+    그 안에 들어가서 '새로 만들기'를 통해서 새 경로를 지정해주는데
+
+C:\workspace\spring\apache-maven-3.8.4\bin
+    을 넣어주도록 한다.
+
+mvn -version 입력했을때 다음과 비슷하게 나오면 정상적으로 적용되었음을 뜻한다.
+
+C:\Users\hjm79>mvn -version
+Apache Maven 3.8.4 (9b656c72d54e5bacbed989b64718c159fe39b537)
+Maven home: C:\workspace\spring\apache-maven-3.8.4
+Java version: 1.8.0_172, vendor: Oracle Corporation, runtime: C:\Program Files\Java\jdk1.8.0_172\jre
+Default locale: ko_KR, platform encoding: MS949
+OS name: "windows 10", version: "10.0", arch: "amd64", family: "windows"
+
+C:\Users\hjm79>
+
+
+
+
+mvn archetype:generate -Dgroupld=com.newlecture -Dartifactld=javaprj -DarchetypeArtifactld=maven-archetype-quickstart
+    이 명령어는 자바 프로젝트를 생성하는 파일이다.
+    구문의 내용은 다음과 같다.
+
+    1. archetypeArtifactld=maven-archetype-quickstart
+    archetypeArtifactld         프로젝트 구조는
+    maven-archetype-quickstart  으로 만들겠다.
+
+    2. artifactld=javaprj
+    artifactld      이번에는 내가
+    javaprj         이라는 새로운 프로젝트를 생성하겠다.
+
+    3. groupld=com.newlecture 
+    groupld         프로젝트를 식별하기 위한 그룹명은
+    com.newlecture  이라고 이름짓겠다.
+
+
+저 명령어를 진행하면서 프롬프트가 사용자에게 뭔가 질문할 게 있어서 멈추는 경우도 있고, 그냥 로그 확인하라고 멈추는 경우도 있으니, 계속해서 이유없이 멈춰있는거같다 싶으면 중간에 엔터를 눌러주는게 좋다.
+
+    버전을 물어볼 수 있는데, (지금은) 뭘 고르든 상관 없으니 대충 골라주면 된다. 다만, 이번 문서에서는 1.0 버전을 사용하겠다.
+    그룹 아이디를 물어볼 수 있는데, 위의 구문과 같이 com.newlecture 이라고 입력해준다.
+    아티팩트 아이디를 물어볼 수 있는데, 아티팩트라기보다는 프로젝트 이름이라고 생각하는게 편하다. javaprj 라고 입력해주겠다.
+    패키지를 물어볼 수 있는데, 이번에도 com.newlecture 이라고 입력해주겠다.
+
+    마지막에  Y : 라는 구문과 함께 '프로젝트 생성을 마치시겠습니까?'라는 내용의 문답이 나온다. 엔터를 눌러 프로젝트 빌드를 마친다.
+
+BUILD SUCCESS
+라는 내용 말고, 실패했다는 내용이 중점적으로 나온다면 실패했다고 보면 된다.
+
+
+
+
+
+
+
+C:\workspace\spring\maven\javaprj\src\main\java\com\newlecture
+    이 경로를 따라 이동하면 아래와 같은 자바 파일이 나타난다.
+
+App.java
+    이 파일을 열어서 안에 있는
+    System.out.println( "Hello World!" );
+    구문을
+    System.out.println( "Hello Maven!" );
+    으로 바꿔주도록 하겠다.
+
+
+C:\workspace\spring\maven\javaprj
+    이 경로에 src 파일과 target 파일, 그리고 
+
+pom.xml
+    파일이 있을텐데, 여기있는 pom.xml 이 보이는 곳에서 입력해줘야하는 명령어가 있다.
+
+mvn compile
+    우리가 앞서 설정한 프로젝트를 컴파일하는 명령어이다.
+    이 명령어를 입력했는데, 'BUILD FAILURE' 이라는 이라는 제목의 오류 구문 문단이 나타날 수 있다. 그중에서
+    javaprj : Compilation failure : Compilation failure
+    이러한 구문이 나타난 경우에는 이것을 해결해주기 위해서 추가적인 오류 해결을 해줘야한다.
+    이에 대한 내용은 'mvn 컴파일러 버전 오류 해결.txt'문서에서 다룬다.
+
+Compiling 1 source file to C:\workspace\spring\maven\javaprj\target\classes
+    라는 문장과 함께
+
+BUILD SUCCESS
+    프로젝트 컴파일(빌드) 가 성공했다는 구문이 나온다.
+
+C:\workspace\spring\maven\javaprj\target\classes
+    실제로 이 경로로 이동해보면 com 디렉터리 안에 newlecture 안에 App.class
+
+App.class
+    이 제목의 파일로 컴파일한 결과가 나타나는것을 볼 수 있다.
+
+
+mvn package
+    현재까지 만들고, 컴파일한 전체적인 요소들을 갔다가 패키징을 해주는 명령어이다.
+    이 또한 pom.xml 이 보이는 디렉터리(C:\workspace\spring\maven\javaprj)에서 실행시켜줘야 한다.
+
+target
+    디렉터리(C:\workspace\spring\maven\javaprj\target) 안으로 들어가보면
+
+javaprj-1.0-SNAPSHOT.jar
+    이라는 이름의 자르 파일이 있는데, 이 파일의 확장자를 zip 으로 바꿔준다음 내부를 들여다볼 수 있다.
+
+javaprj-1.0-SNAPSHOT.zip
+    이 이름 이외에 대충 원하는 zip 파일 이름으로 정한다음 내부를 들여다본다.(꼭 압축해제하지 않아도 괜찮지만 해줘도 상관없다.)
+
+    이 zip 파일 안을 들여다보면 우리가 설정한 패키지 이름인
+    com.newlecture 을 따라 생성된 디렉터리들이 있다.
+    이 안에 들어가보면
+
+App.class
+    이름으로 설정된 플래스 파일이 있는것을 확인할 수 있다.
+
+
+방금 빌드한 jar 파일을 실행시켜줄것이다.
+    만약에 원본 파일을 훼손시켰다고 해도, 위에서 해줬단 mvn package 명령어를 다시 실행시켜주기만 하면 된다. 어쨌던간에 javaprj-1.0-SNAPSHOT.jar 이 자르 파일이 정상적으로 제 위치에 존재해야한다.
+
+java -cp target\javaprj-1.0-SNAPSHOT.jar com.newlecture.App
+    명령어를 입력해서
+    Hello Maven!
+    이 정상적으로 출력되는지 확인해본다.
+
+
+

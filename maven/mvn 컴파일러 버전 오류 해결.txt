@@ -1,0 +1,199 @@
+이 문서에서는
+
+mvn compile
+실행 시 나타나는
+
+BUILD FAILURE
+javaprj : Compilation failure : Compilation failure
+형식의 오류에 대해서 해결하는 과정을 서술합니다.
+
+maven 기록.txt
+의 100번째 줄에 있는 mvn compile 입력 및 실행 부분에서부터 뻗어나왔습니다.
+
+시작한다.
+
+이 경우에는 플러그인부분에서 오류가 발생했음을 확인할 수 있다.
+Source option 5 is no longer supported. Ues 7 or later.
+Target option 5 is no longer supported. Ues 7 or later.
+해석해보면 현재 설정된 플러그인에서는 '소스 옵션'과 '타겟 옵션'을 지원하지 않으니 7버전 또는 그 이상의 버전으로 등록된 옵션을 사용해달라는 내용이다.
+
+pom.xml
+파일을 열어줘서 중간에 문단 하나를 추가해줘야한다.
+수정 이전의 파일 내용은 다음과 같다.
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.newlecture</groupId>
+    <artifactId>javaprj</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>javaprj</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+        <plugins>
+            <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+            <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.1.0</version>
+            </plugin>
+            <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+            <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.0.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.1</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.0.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-install-plugin</artifactId>
+            <version>2.5.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.8.2</version>
+            </plugin>
+            <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+            <plugin>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.7.1</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>3.0.0</version>
+            </plugin>
+        </plugins>
+        </pluginManagement>
+    </build>
+    </project>
+
+
+마지막에 있는
+</project>
+문장 바로 위에
+<properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+을 입력해줘야한다.
+
+다음은 이 파일이 수정되는 과정 이후의 내용이다.
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+        <modelVersion>4.0.0</modelVersion>
+
+        <groupId>com.newlecture</groupId>
+        <artifactId>javaprj</artifactId>
+        <version>1.0-SNAPSHOT</version>
+
+        <name>javaprj</name>
+        <!-- FIXME change it to the project's website -->
+        <url>http://www.example.com</url>
+
+        <properties>
+            <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+            <maven.compiler.source>1.7</maven.compiler.source>
+            <maven.compiler.target>1.7</maven.compiler.target>
+        </properties>
+
+        <dependencies>
+            <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+            </dependency>
+        </dependencies>
+
+        <build>
+            <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+            <plugins>
+                <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+                <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>3.1.0</version>
+                </plugin>
+                <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+                <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                </plugin>
+                <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.1</version>
+                </plugin>
+                <plugin>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                </plugin>
+                <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                </plugin>
+                <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+                <plugin>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.7.1</version>
+                </plugin>
+                <plugin>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.0.0</version>
+                </plugin>
+            </plugins>
+            </pluginManagement>
+        </build>
+        
+        <properties>
+            <maven.compiler.source>1.8</maven.compiler.source>
+            <maven.compiler.target>1.8</maven.compiler.target>
+        </properties>
+    </project>
+
+
+이렇게 수정이 전부 끝마쳤으면 이제 잘 실행되는지에 관해 확인을 해야한다.
+
+mvn compile
+    명령어를 입력해서 아까와 같은 오류 발생이 다시 일어나는지 확인해준다.
+
+BUILD SUCCESS
+    딱히 거슬리는 에러 구문 없이 이렇게 빌드 성공 이라는 내용이 나오면 성공적으로 문제 해결이 된것이다.
+    
