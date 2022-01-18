@@ -1,0 +1,301 @@
+mvn 기록.txt
+    이 문서는 'mvn 기록.txt' 의 후속작업으로써, 앞서 수행한 과정들을 거치지 않는다면 문서를 보실때 여러 불편함이 생길 수 있음을 감안해주시면 감사하겠습니다.
+    이외에도 eclipse IDE 설치, java 다운로드 및 cmd 실행환경 구축, apache 9버전 파일 다운로드 등등의 선행작업을 완료해야합니다.
+
+mvn 웹 프로젝트 변환.txt
+    이 문서에서는 기초적인 옵션으로 생성된 mvn 프로젝트를 웹 프로젝트로 변환하는 과정 이후의 후속작업을 기록합니다.
+    따라서 이전에 거친 'mvn 웹 프로젝트 변환.txt' 내용을 전부 읽고, 적용시킨 이후에 이 문서를 열럼하시는것을 권장합니다.
+
+maven 형식의 자바 프로젝트
+    어찌됐던지간에, pom.xml 을 중점적으로 다루게 될테니 다른요소들을 충족하지 못하더라도 localhost 로 html 파일 하나 접근할 정도의 프로젝트가 있으면 됩니다.
+
+
+pom.xml
+    우리가 필요한 여러가지 라이브러리들은 직접 인터넷에서 다운받고, 레파지토리(저장소)까지 가져와서 이클립스나 인텔리제이의 도움을 받아 프로젝트에 적용(apply)하는 과정을 거쳐야했습니다.
+    maven 기반의 프로젝트에서는 이러한 일련의 과정들을 번거롭게 거치지 않아도 되고
+    오류가 또 하나 이상의 오류를 유발하는 생산성을 저하시키는 오류의 마트료시카같은 상황들을 마주하는 경우를 대폭 줄여줄것입니다.
+    이 문서에서는 maven 을 통해, pom.xml 을 통해 라이브러리를 가져오고 자동적으로 적용시켜주는 실습을 기록합니다.
+
+
+목차는 다음과 같습니다.
+1. jsp 파일 생성
+2. 문제 확인 및 필요한 라이브러리 확인
+3. pom.xml 파일 내용 수정
+4. 적용 및 결과확인
+
+
+시작한다.
+
+
+1. jsp 파일 생성
+
+
+src/main/webapp
+    이 디렉터리 안에다가 index.jsp 파일을 만들어준다.
+    index.html 파일이 이미 존재하지만, 신경쓰지 않는다.
+
+    내용은 대충 다음과 같이 넣어준다. 기본 생성시에 내용이 들어간다면 그대로 냅둬도 상관없지만, index.jsp 임을 타나내는 출력문 태그 조금 적어주도록 하자.
+
+    <%@ page language="java" contentType="text/html; charset=EUC-KR"
+    pageEncoding="EUC-KR"%>
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="EUC-KR">
+            <title>Insert title here</title>
+        </head>
+        <body>
+            <h1>JSP Index Page</h1><br>
+            ${3+8} 
+        </body>
+    </html>
+
+
+
+2. 문제 확인 및 필요한 라이브러리 확인
+
+
+
+The superclass "jakarta.servlet.http.HttpServlet" was not found on the Java Build Path
+    <%@ 같이, jsp 에서 java 의 영역을 나타내는 태그 시작지점에 이러한 오류가 발생할 수 있다. 
+    '슈퍼클래스 "jakarta.servlet.http.HttpServlet"을 Java 빌드 경로에서 찾을 수 없습니다.'라고 번역본이 나온다.
+    여기서 눈여겨봐야할 부분은 다음과 같다.
+    'Java 빌드 경로에서 찾을 수 없습니다.'
+
+Build Path , Configure Build Path
+    빌드 경로(Build Path)를 확인하겠다.
+    프로젝트를 우클릭한다음 'Build Path'항목을 찾아주고, 'Configure Build Path...'를 눌러준다.
+
+Libraries
+    Java Build Path 안에 'Source', 'Project', 'Libraries', 'Order and Export' 항목이 있을텐데, 그중에서 'Libraries' 항목으로 들어가준다.
+    그 안에 
+    JRE System Library [JavaSE-1.7]
+    Maven Dependencies
+    Server Runtime [Apache Tomcat v9.0]
+    같은 라이브러리들이 있을것이다. 
+
+    Server Runtime [Apache Tomcat v9.0]
+    이 라이브러리가 없다면 추가해주도록 하자.
+
+    오른쪽에 있는 버튼 리스트중에서
+    'Add Library...'항목을 클릭해서 들어가준다.
+    'Server Runtime'항목을 클릭하고 Next 를 누른다.
+    'Apache Tomcat v9.0'항목을 클릭하고 Finish 를 누른다. (꼭 아파치 9.0버전이 아니여도 선택해준다.)
+    이 과정을 거친다면
+
+    Server Runtime [Apache Tomcat v9.0]
+    이 라이브러리(자체는 아니지만)가 추가될것이다.
+
+    오류가 해결됐다면 이 이후의 문서는 열람하지 않아도 된다.
+    하지만 서버 런타임 라이브러리가 추가됐음에도 오류가 해결되지 않을것이다.
+    pom.xml 파일을 수정함으로써 이 문제를 해결해보도록 하겠다.
+
+    
+
+
+<dependencies>
+    pom.xml 파일 내부에는 <dependencies> 이라는 태그 안에 <dependency> 태그들이 모여있을텐데, 이들은 우리가 '이 프로젝트에 적용시키고싶은 라이브러리들'을 적어주는곳이다.
+
+Maven 라이브러리들
+    https://mvnrepository.com/ 이 URL 로 이동하거나
+    'maven repository'을 키워드로 검색해서 나오는 웹사이트를 들어가준다.
+
+    이 웹사이트에는 maven 프로젝트 환경에서 편하게 적용받을 수 있는 여러가지 라이브러리들에 대한 정보를 제공해준다. 그중에서는 우리가 편하게 pom.xml 에 적기만 해도 적용받을 수 있는 태그 모음또한 존재한다.
+
+
+
+3. pom.xml 파일 내용 수정
+
+
+
+
+jsp 라이브러리 보고 내용 복사하기
+    우리는 지금 jsp 파일을 설정하다가 에러가 났으니, jsp 관련 라이브러리를 적용받을 수 있도록 검색을 해주겠다.
+    방금 들어간 웹사이트의 상단에는 검색창 하나가 존재할텐데, 그곳에
+
+    tomcat jsp 라고 검색해준다.
+    아마 최상단에 위치할
+
+    1. Tomcat JSP API136 usages
+    org.apache.tomcat » tomcat-jsp-api
+    이 컬럼에서 검은색 텍스트를 클릭해서 들어가준다.
+
+    Version 항목들중에서 자신이 현재 사용하고 있는 톰캣 버전을 찾아준다.
+    apache-tomcat-9.0.52 나 apache-tomcat-9.0.56 같이 미묘하게 다른 버전들이 있으니 꼭 확인해주길 바란다.
+    꼭 자신의 아파치 서버에 맞는 버전을 선택해준다.
+    꼭 자신의 아파치 서버에 맞는 버전을 선택해준다.
+    꼭 자신의 아파치 서버에 맞는 버전을 선택해준다.
+
+    만약에, 자신이 사용하는 톰캣 서버가 apache-tomcat-9.0.56 이라면
+    9.0.56 버튼을 눌러서 페이지로 들어가준다.
+
+    들어가주면 대충 이런 내용이 적힌 텍스트박스가 있는데, 이를 클릭해주면 자동으로 복사를 해준다.(안되면 그저 ctrl + c 해도 괜찮다.)
+
+    <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jsp-api -->
+    <dependency>
+        <groupId>org.apache.tomcat</groupId>
+        <artifactId>tomcat-jsp-api</artifactId>
+        <version>9.0.56</version>
+    </dependency>
+
+    이 복사한 구문을 가지고 다시 위의 xml 파일로 돌아가서 <dependency> 태그들이 있는 곳에 붙혀넣기 해준다.
+
+    최종적으로 pom.xml 파일의 내용은 다음과 비슷한 내용이 될 것이다.
+
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.newlecture</groupId>
+    <artifactId>javaprj</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>javaprj</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jsp-api -->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jsp-api</artifactId>
+            <version>9.0.56</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+        <plugins>
+            <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+            <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.1.0</version>
+            </plugin>
+            <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+            <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.0.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.1</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.0.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-install-plugin</artifactId>
+            <version>2.5.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.8.2</version>
+            </plugin>
+            <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+            <plugin>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.7.1</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+            </plugin>
+        </plugins>
+        </pluginManagement>
+    </build>
+    </project>
+
+
+4. 적용 및 결과확인
+
+이제 이 pom.xml 파일을 저장하고 maven -> Update Project... 를 눌러서 재시작해준다.
+
+index.jsp 우클릭 -> Run As -> Run on Server 을 통해 index.jsp 파일을 서버로 실행해서 들어가준다.
+
+http://localhost:8080/javaprj/index.jsp
+잘 출력되는 것을 볼 수 있다.
+
+
+
+
+
+
+
++ maven 이 아니였다면?
+
+
+${user.home}/.m2/repository
+경로로 들어가면 우리가 maven 을 통해 받은 파일들이 뭐가 있는지 알 수 있다고 합니다.
+
+C:\Users\hjm79\.m2\repository
+저의 경우에는 이러한 경로였습니다.
+
+그중에서도 우리가 이번에 실습한 파일들을 열람하려면 이렇게 깁숙히 들어가야했습니다.
+C:\Users\hjm79\.m2\repository\org\apache\tomcat
+
+들어가서 파일들을 출력해보면 다음과 같이 여러개의 파일들이 있는데, 이는 참 인상적인 장면이였습니다.
+
+C:\Users\hjm79\.m2\repository\org\apache\tomcat>dir
+ C 드라이브의 볼륨에는 이름이 없습니다.
+ 볼륨 일련 번호: 1CA9-147A
+
+ C:\Users\hjm79\.m2\repository\org\apache\tomcat 디렉터리
+
+2022-01-19  오전 04:57    <DIR>          .
+2022-01-19  오전 04:57    <DIR>          ..
+2022-01-19  오전 04:57    <DIR>          tomcat-el-api
+2022-01-19  오전 04:57    <DIR>          tomcat-jsp-api
+2022-01-19  오전 04:57    <DIR>          tomcat-servlet-api
+               0개 파일                   0 바이트
+               5개 디렉터리  29,084,819,456 바이트 남음
+
+C:\Users\hjm79\.m2\repository\org\apache\tomcat>
+
+우리는 분명히 'tomcat-servlet-api'만을 다운받았음에도 불구하고 
+'tomcat-jsp-api' 디렉터리와 'tomcat-el-api'파일들이 새로 생겼음을 확인할 수 있었습니다.
+여기서 maven의 사용의의를 찾아볼 수 있다고 생각합니다.
+
+만약에 maven 의 pom.xml 을 통해 라이브러리를 적용받는게 아니였다면
+tomcat-servlet-api 를 적용한 후에 여러가지 문제가 또 발생하는것을 확인하고서 그제서야
+tomcat-jsp-api 와 tomcat-el-api 라이브러리(디렉터리)를 추가해야했을 수도 있었습니다.
+
+
+
+이렇게 직접 cmd(또는 파일탐색기)를 통해 결과를 열람하는것 이외에도 여러 방법이 있는데,
+
+eclipse 안에 잇는 Maven Dependencies 라이브러리 내부를 펼쳐보면 위에서 나열한 tomcat-el-api ,tomcat-jsp-api ,tomcat-servlet-api 라이브러리들이 들어있는것을 확인하실 수 도 있고,
+
+pom.xml 안에 Dependency Hierarchy 환경으로 넘어가면 tomcat-el-api [compile], tomcat-jsp-api [compile], tomcat-servlet-api [compile]
+
+
+
+
+
+
+
+

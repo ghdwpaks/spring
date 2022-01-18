@@ -1,6 +1,6 @@
-maven 기록.txt
+mvn 기록.txt
     이 문서에서는 기초적인 옵션으로 생성된 mvn 프로젝트를 웹 프로젝트로 변환하는 과정 기록합니다.
-    이 문서는 'maven 기록.txt' 의 후속작업으로써, 앞서 수행한 과정들을 거치지 않는다면 문서를 보실때 여러 불편함이 생길 수 있음을 감안해주시면 감사하겠습니다.
+    이 문서는 'mvn 기록.txt' 의 후속작업으로써, 앞서 수행한 과정들을 거치지 않는다면 문서를 보실때 여러 불편함이 생길 수 있음을 감안해주시면 감사하겠습니다.
     이외에도 eclipse IDE 설치, java 다운로드 및 cmd 실행환경 구축, apache 9버전 파일 다운로드 등등의 선행작업을 완료해야합니다.
 
 중간에 pom.xml 으로부터 Could not initialize class org.apache.maven.plugin.war.util.WebappStructureSerializer 같은 구문의 오류가 생길 수 있습니다.
