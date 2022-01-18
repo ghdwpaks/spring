@@ -1,0 +1,69 @@
+mvn 에서는 단계별 실행을 담당하는 '플러그인' 이라는것들이 있다.
+
+mvn help:describe -Dcmd=compile 
+이 명령어를 실행시켜보면 다음과 같은 출력문들이 나온다.
+
+    It is a part of the lifecycle for the POM packaging 'jar'. This lifecycle includes the following phases:
+    * validate: Not defined
+    * initialize: Not defined
+    * generate-sources: Not defined
+    * process-sources: Not defined
+    * generate-resources: Not defined
+    * process-resources: org.apache.maven.plugins:maven-resources-plugin:2.6:resources
+    * compile: org.apache.maven.plugins:maven-compiler-plugin:3.1:compile
+    * process-classes: Not defined
+    * generate-test-sources: Not defined
+    * process-test-sources: Not defined
+    * generate-test-resources: Not defined
+    * process-test-resources: org.apache.maven.plugins:maven-resources-plugin:2.6:testResources
+    * test-compile: org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile
+    * process-test-classes: Not defined
+    * test: org.apache.maven.plugins:maven-surefire-plugin:2.12.4:test
+    * prepare-package: Not defined
+    * package: org.apache.maven.plugins:maven-jar-plugin:2.4:jar
+    * pre-integration-test: Not defined
+    * integration-test: Not defined
+    * post-integration-test: Not defined
+    * verify: Not defined
+    * install: org.apache.maven.plugins:maven-install-plugin:2.4:install
+    * deploy: org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy
+
+    [INFO] ------------------------------------------------------------------------
+    [INFO] BUILD SUCCESS
+    [INFO] ------------------------------------------------------------------------
+    [INFO] Total time:  22.650 s
+    [INFO] Finished at: 2022-01-18T19:01:18+09:00
+    [INFO] ------------------------------------------------------------------------
+
+
+    이런식으로 출력되는것을 볼 수 있는데 이 구문 문단의 의미는 다음과 같다.
+
+    * process-resources: org.apache.maven.plugins:maven-resources-plugin:2.6:resources
+    * compile: org.apache.maven.plugins:maven-compiler-plugin:3.1:compile
+    컴파일 도구인 컴파일러에 대한 내용
+
+    * process-test-resources: org.apache.maven.plugins:maven-resources-plugin:2.6:testResources
+    * test-compile: org.apache.maven.plugins:maven-compiler-plugin:3.1:testCompile
+    테스트에 대한 내용
+
+    * test: org.apache.maven.plugins:maven-surefire-plugin:2.12.4:test
+    테스트 플러그인에 대한 내용
+
+    * package: org.apache.maven.plugins:maven-jar-plugin:2.4:jar
+    이 모든 절차에 대한 목표 (자르)파일
+
+
+플러그인에 대한 각 내용과 파일 등등 여러 정보를 보고싶다면 아래의 링크를 타고 드가면 볼 수 있다
+https://maven.apache.org/plugins/index.html
+
+    Core plugins : 이 아래에 나열되는 요소(컬럼)들은 MVN 에 필요한 가장 중요한 플러그인들이다.
+    Packaging types/tools : 패키징 할때 나오는 결과물들의 파일형식들과 그에 필요한 툴들이다.
+    Reporting plugins : 로그, 보고서를 작성할때 쓰이는 플러그인들이다.
+    Tools : 도구들이다
+
+
+    Plugin(플러그인), Type(형식), Version(버전), Release Date(배포 날짜 년-월-일), Description(간단한 설명), Source Repository(소스 출처, 소스 확인처), Issue Tracking(문제 또는 이슈 기록들)
+    순으로 정보들이 나열되어 있다.
+
+    
+

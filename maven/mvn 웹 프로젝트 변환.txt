@@ -1,0 +1,264 @@
+maven 기록.txt
+    이 문서에서는 기초적인 옵션으로 생성된 mvn 프로젝트를 웹 프로젝트로 변환하는 과정 기록합니다.
+    이 문서는 'maven 기록.txt' 의 후속작업으로써, 앞서 수행한 과정들을 거치지 않는다면 문서를 보실때 여러 불편함이 생길 수 있음을 감안해주시면 감사하겠습니다.
+    이외에도 eclipse IDE 설치, java 다운로드 및 cmd 실행환경 구축, apache 9버전 파일 다운로드 등등의 선행작업을 완료해야합니다.
+
+중간에 pom.xml 으로부터 Could not initialize class org.apache.maven.plugin.war.util.WebappStructureSerializer 같은 구문의 오류가 생길 수 있습니다.
+만약 위와같은 오류상황이 생길경우 'mvn 플러그인 오류 해결.txt' 문서를 참고해주시면 도움이 되실겁니다.
+
+
+전체적인 순서는 다음과 같습니다.
+0. 이클립스 설치, 아파치 서버 파일 설치, 자바 설치 및 적용, MVN 설치 및 적용 등등을 동반한 'maven 기록.txt'에 기록된 작업들
+1. 이클립스에 import 하기
+2. pom.xml 파일 수정
+3. 폴더 생성과 web.xml 파일 가져오기
+4. index.html 파일 생성과 내용 넣기
+5. (로컬호스트)서버에서 실행하기
+
+
+시작한다.
+
+
+
+1. 이클립스에 import 하기
+
+
+
+Project Explorer
+    eclipse IDE 안에 있는 'Project Explorer' 창의 공백에다가 우클릭을 한다음, import를 눌러 준비과정을 거친다.
+
+Existing Maven Project
+    Select an import wizard 의 아래에 있는 목록에서 'Maven'을 찾은 다음, Existing Maven Project 을 클릭 하고서 Next 버튼을 눌러 다음으로 넘어간다.
+
+Root Directory
+    기존에 위치한 Maven 프로젝트(또는 프로젝트 파일의 경로)를 질문하는 곳이 나오는데, 그 오른쪽에 있는 'Browse' 버튼을 눌러 그 프로젝트의 경로를 찾아주도록 하겠다.
+    이러한 경우에는 'pom.xml'이 위치하는 파일까지만 경로를 설정해주도록 하겠다. 
+
+C:\workspace\spring\maven\javaprj
+    'pom.xml'이 위치하는 파일까지만 경로를 지정해주고 '폴더 선택'을 눌러 경로설정을 마치도록 한다.
+    추가적으로, Projects: 체크박스 리스트에는 /pom.xml 이라는파일에 체크박스가 쳐져있는 상태여야할것이다.
+
+Finish
+    버튼을 눌러서 import 과정을 마치도록 하겠다.
+
+
+
+
+2. pom.xml 파일 수정
+
+
+
+폴더 안보임
+    import를 했음에도 불구하고 src 안에 main 으로 들어가보면 정작 java 폴더가 없는것처럼 보일 수 있다. 이러한 경우에는 실질적으로 cmd 창이나 윈도우 파일 탐색기로 직접 들어가서 java 폴더가 있는지 없는지를 확인해줘야한다. 만약에 없다고 하면 문제가 생긴것이고, 있다면 문제가 없다는뜻이다.
+    그럼에도 불구하고 여전히 eclipse 에서는 src 아래에 main 아래에 java 폴더가 보이지 않을 수 있는데 이는 걱정하지 않아도 괜찮은게, 아마 src/main/java 라는 패키지 이름으로써 하위 디렉터리에 접근할 수 있도록 설정되어있을것이다. (src/test/java 의 경우에도 똑같다.)
+    이클립스에서 접근하지 못한다고 이번 과정에서 딱히 큰 문제가 생기는것은 아니니 급한것이 아니라면 꼭 고칠 이유는 없다.
+
+pom.xml
+    웬만한 경우에서, 프로젝트 안에 바로 보일 pom.xml을 열어서 packaging 파일 형식을 바꿔주도록 하겠다.
+
+<packaging>war</packaging>
+    위와 같은 packaging 형식을 정해주는 태그의 내용을 바꿔줘야한다.
+    웬만하면 맨 위쪽에 위치해있을텐데, 이 태그가 없다면 차라리 위의 내용을 추가하는것도 방법이다.
+
+    
+    수정 후에 'Could not initialize class org.apache.maven.plugin.war.util.WebappStructureSerializer'라는 구문으로 에러가 발생한다면
+    <plugin> 태그들이 모인곳에
+    <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.2.2</version>
+    </plugin>
+    이러한 내용을 넣어주도록 한다.
+    (*자세한 내용은 mvn 플러그인 오류 해결.txt 참고)
+    
+    수정 후의 전체적인 파일의 모습은 다음과 같다.
+
+
+
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.newlecture</groupId>
+    <artifactId>javaprj</artifactId>
+    <packaging>war</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>javaprj</name>
+    <!-- FIXME change it to the project's website -->
+    <url>http://www.example.com</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
+        <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+        <plugins>
+            <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
+            <plugin>
+            <artifactId>maven-clean-plugin</artifactId>
+            <version>3.1.0</version>
+            </plugin>
+            <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
+            <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <version>3.0.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.0</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.22.1</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.0.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-install-plugin</artifactId>
+            <version>2.5.2</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.8.2</version>
+            </plugin>
+            <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
+            <plugin>
+            <artifactId>maven-site-plugin</artifactId>
+            <version>3.7.1</version>
+            </plugin>
+            <plugin>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>3.0.0</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.2.2</version>
+            </plugin>
+        </plugins>
+        </pluginManagement>
+    </build>
+    </project>
+
+
+
+
+3. 폴더 생성과 web.xml 파일 가져오기
+
+
+
+Maven -> Update Project
+    import 된 프로젝트를 우클릭 한다음, Maven 항목을 찾아 들어가서 Update Project 항목을 클릭해서 전체적으로 프로젝트를 다시 시작해준다.
+    
+    javaprj 에 체크박스가 쳐져있을텐데, 정상적이니 OK 를 누른다.
+
+
+webapp
+    위의 과정을 끝내면 main 폴더 안에 webapp 이라는 폴더가 생성될 수 있다.
+    없다면 만들어줘야한다.
+    없다면 만들어줘야한다.
+    없다면 만들어줘야한다.
+
+WEB-INF
+    만들어진 webapp 디렉터리 안에 'WEB-INF'라는 내용의 디렉터리를 만들어줘야한다.
+    이름은 바꾸지 않도록 한다.
+
+web.xml
+    tomcat (apache-tomcat-9.0.56 같은) 서버 파일이 있는 곳에서 다음과 같은 경로로 들어간다.
+    webapp 폴더 안에
+    ROOT 폴더 안에
+    WEB-INF 폴더 안에
+    web.xml 파일을
+    복사한다음에, 자바 프로젝트 안에 있는 WEB-INF 안에 넣어준다.
+    웬만하면 그냥 이동시키지 말고 복사해서 붙혀넣도록 하자.
+
+
+    C:\workspace\spring\maven\javaprj\src\main\webapp\WEB-INF>dir
+    2022-01-18  오후 11:27             1,257 web.xml
+                1개 파일               1,257 바이트
+                2개 디렉터리  29,277,646,848 바이트 남음
+    C:\workspace\spring\maven\javaprj\src\main\webapp\WEB-INF>
+
+    최종적인 모습은 다음과 같다.
+    javaprj -> src -> main -> webapp -> WEB-INF -> web.xml
+
+
+
+4. index.html 파일 생성과 내용 넣기
+
+
+
+webapp 안에 index.html
+    webapp 폴더 안에 WEB-INF 파일이 보이는 위치에서 index.html 파일을 만들어준다
+    이 파일에는 별 다른 내용없이 대충 내용을 넣어주도록 하겠다.
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <meta charset="EUC-KR">
+            <title>Insert title here</title>
+        </head>
+        <body>
+            <h1>Hello Maven!</h1>
+            <h2>I'm ghdwpaks</h2>
+        </body>
+    </html>
+    띄어쓰기를 꼭 지키지 않아도 괜찮으니 대충 넣어줘도 된다.
+
+
+
+
+5. (로컬호스트)서버에서 실행하기
+
+
+index.html , Run on Server
+    방금 생성해주고 내용을 넣어준 index.html 파일을 우클릭 한다음
+    Run As 항목을 눌러서
+    Run on Server 항목을 눌러준다
+
+    localhost 안에 있는 Tomcat 서버를 선택한다음 Finish 를 누른다.
+    이렇게 간단하게 끝나지 않고, 서버 형식부터 선택하게 된다면 다음 과정을 수행해야한다.
+
+Apache , Select the server type 
+    여러가지 서버 형식이 남긴 리스트의 맨 첫번째에 Apache 라는 항목이 있을텐데, 그 안에 있는 자신에게 맞는 톰캣서버 버전에 따라 선택해준다.
+    Tomcat v[버전 번호] Server 
+    선택해주고, Next 를 눌러서 다음으로 넘어가준다.
+
+
+아파치 서버 파일 경로 선택
+    Name : 안에
+    Apache Tomcat v9.0 이라고 이미 입력되어있을텐데, 이것은 크게 신경쓰지 않아도 괜찮다.
+
+    Browse 버튼을 눌러서 아파치 톰캣 서버가 실질적으로 존재하는 파일을 매핑해줘야한다.
+
+    버튼을 누른다음, 실질적으로 톰캣 서버가 위치한 디렉터리로 이동한 다음 '폴더 선택'을 눌러 선택을 해준다.
+    C:\workspace\spring\tomcat_zip\apache-tomcat-9.0.56
+    이와같이, 톰캣 서버 파일에서 'bin'파일이 위치하는 곳을 선택해줘야한다.
+
+    선택을 전부 마치고 Finish 버튼을 눌러 최종적으로 확인 및 실행을 해준다.
+
+
+
++ 확인
+자동적으로 http://localhost:7904/javaprj/index.html 같이 리다이렉션 시켜줄텐데, 만약에 그렇지 않다면 http://localhost:포트번호/javaprj/index.html 으로 이동해주면 된다.
+
+
+
+
+
+

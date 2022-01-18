@@ -1,3 +1,19 @@
+Could not initialize class org.apache.maven.plugin.war.util.WebappStructureSerializer
+
+이 문서에서는 위의 오류구문을 나타내는 pom.xml 파일에서 문제가 일어난 경우에 대해 문제해결방법을 서술합니다. 
+
+https://jisblee.me/board/view/0/1/402/en
+으로부터 발췌
+
+<plugin>
+    <artifactId>maven-war-plugin</artifactId>
+    <version>3.2.2</version>
+</plugin>
+구문을 추가해서 오류를 해결하라고 나옵니다.
+
+이 구문은 <plugin> 태그들이 모인곳 말단에 작성해줍니다.
+수정 후의 전체적인 파일의 모습을 서술하며 문서 작성을 마치겠습니다.
+
 <?xml version="1.0" encoding="UTF-8"?>
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -78,3 +94,6 @@
     </pluginManagement>
   </build>
 </project>
+
+
+
