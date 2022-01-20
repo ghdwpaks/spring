@@ -6,6 +6,10 @@ public class InlineExamConsole implements ExamConsole {
 	
 	private Exam exam;
 	
+	public InlineExamConsole() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	
 	public InlineExamConsole(Exam exam) {
 		this.exam = exam;
@@ -18,6 +22,15 @@ public class InlineExamConsole implements ExamConsole {
 	public void print() {
 		// TODO Auto-generated method stub
 		System.out.println("total is "+exam.total()+", avg is "+exam.avg()+"\n");
+	}
+
+
+
+
+	@Override
+	public void setExam(Exam exam) {
+		// TODO Auto-generated method stub
+		this.exam = exam;
 	}
 
 }
