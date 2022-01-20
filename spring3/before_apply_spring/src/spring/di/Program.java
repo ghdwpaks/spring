@@ -16,7 +16,8 @@ public class Program {
 		*/
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring/di/setting.xml");
-		ExamConsole console = context.getBean(ExamConsole.class);
+		//ExamConsole console = context.getBean(ExamConsole.class);
+		ExamConsole console = (ExamConsole) context.getBean("console");
 		console.print();
 		
 	}
