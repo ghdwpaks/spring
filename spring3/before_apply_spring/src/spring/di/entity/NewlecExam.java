@@ -8,9 +8,8 @@ public class NewlecExam implements Exam{
 	private int com;
 	
 	
-
+	
 	public NewlecExam(int kor, int eng, int math, int com) {
-		super();
 		this.kor = kor;
 		this.eng = eng;
 		this.math = math;
