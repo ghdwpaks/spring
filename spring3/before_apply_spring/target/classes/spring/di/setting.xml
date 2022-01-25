@@ -18,7 +18,7 @@
 		</bean>
 		
 		<bean id="console" class="spring.di.ui.InlineExamConsole">
-			<!-- <property name="exam" ref="exam"/> -->
+			<property name="exam" ref="exam"/>
 		</bean>
 		
 		
