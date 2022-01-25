@@ -20,20 +20,24 @@ public class Program {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext("spring/di/setting.xml");
 		
-		Exam exam = context.getBean(Exam.class);
-		System.out.println(exam.toString());
+		//Exam exam = context.getBean(Exam.class);
+		//System.out.println(exam.toString());
 		
 		//ExamConsole console = context.getBean(ExamConsole.class);
 		ExamConsole console = (ExamConsole) context.getBean("console");
 		console.print();
 		
+		ExamConsole console_Newlec = (ExamConsole) context.getBean("exam");
+		System.out.println("res : "+console_Newlec.toString());
 		
-		List<Exam> exams = (List<Exam>) context.getBean("exams");//new ArrayList<>();
-		exams.add(new NewlecExam(1,1,1,1));
 		
 		
-		System.out.println("===================");
-		for (Exam e : exams) System.out.println(e);
+		//List<Exam> exams = (List<Exam>) context.getBean("exams");//new ArrayList<>();
+		//exams.add(new NewlecExam(1,1,1,1));
+		
+		
+		//System.out.println("===================");
+		//for (Exam e : exams) System.out.println(e);
 		
 		
 	}

@@ -1,6 +1,10 @@
 package spring.di.entity;
 
+
 public class NewlecExam implements Exam{
+	
+	private Exam exam;
+	
 	
 	private int kor;
 	private int eng;
