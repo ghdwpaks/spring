@@ -1,4 +1,17 @@
-ÀÌ µğ·ºÅÍ¸®´Â intellij È¯°æ¿¡¼­ spring , maven ÇÁ·ÎÁ§Æ®¸¦ ¸¸µå´Â °ÍÀ» ¸ñÀûÀ¸·Î ¸¸µé¾îÁ³½À´Ï´Ù.
+Directory description 
 
-Âü°íÀÚ·á :
+1. spring-project-initialize : intellij IDE í™˜ê²½ì—ì„œ spring í”„ë¡œì íŠ¸ë¥¼ ë§Œë“  íŒŒì¼
+1. spring-project-initialize : Files created for spring projects in the intelij IDE environment
+
+2. BoardWeb : intellij IDE í™˜ê²½ì—ì„œ tomcat ì—°ê²°ì„ ì—°ìŠµí•˜ê¸° ìœ„í•´ ë§Œë“  íŒŒì¼
+2. BoardWeb : Files created to practice tomcat connections in an intelij IDE environment
+
+
+
+ì°¸ê³ ìë£Œ(Source From) : 
+spring-project-initialize
 https://whitepaek.tistory.com/55
+
+
+BoardWeb
+https://velog.io/@hogwarts/IntelliJ-Spring-MVC-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0
