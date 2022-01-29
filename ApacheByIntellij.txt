@@ -1,0 +1,17 @@
+hello world
+intellij 환경에서 아파치 서버를 여는 방법을 서술합니다.
+
+http://localhost:8904/views/
+http://localhost:8904/views/index.jsp
+서버를 돌려놓고서 위의 url로 들어가면 index.jsp 로 연결됩니다.
+spring4\BoardWeb\web\WEB-INF\views\index.jsp
+
+https://yn971106.tistory.com/11
+'그리고 이 창으로 와서 내가 html,js를 생성한 파일 src를 설정해두면 검색창에 http://localhost:8000/src/ 로 연결시 해당 창이 뜨게된다.'
+
+
+
+https://akdl911215.tistory.com/272
+https://yn971106.tistory.com/11
+https://goddaehee.tistory.com/247
+
