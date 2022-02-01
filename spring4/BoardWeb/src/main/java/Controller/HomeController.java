@@ -9,4 +9,9 @@ public class HomeController {
     public String main() {
         return "index";
     }
+
+    @RequestMapping(value = "detail")
+    public String DetailMain() {
+        return "detail";
+    }
 }

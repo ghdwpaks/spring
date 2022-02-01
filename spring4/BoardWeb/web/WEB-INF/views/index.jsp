@@ -10,6 +10,7 @@
 <head>
     <title>index</title>
 </head>
+<%@include file ="head.html" %>
 <body>
     <h1>hello world</h1>
     <h2>hello again with intellij</h2>
