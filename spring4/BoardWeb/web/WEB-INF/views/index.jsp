@@ -13,7 +13,10 @@
 <%@include file ="head.html" %>
 <body>
     <h1>hello world</h1>
-    <h2>hello again with intellij</h2>
+    <h2>hello again with intellij</h2><br>
+
+    <h3><a href="ajax_test">AJAX</a></h3><br>
+    <h3><a href="detail">DETAIL</a></h3><br>
 
 </body>
 </html>

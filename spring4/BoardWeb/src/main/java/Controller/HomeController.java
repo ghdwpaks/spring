@@ -10,6 +10,12 @@ public class HomeController {
         return "index";
     }
 
+    @RequestMapping(value="/ajax_test")
+    public String AjaxMain() {
+        return "ajax_test";
+    }
+
+
     @RequestMapping(value = "detail")
     public String DetailMain() {
         return "detail";
