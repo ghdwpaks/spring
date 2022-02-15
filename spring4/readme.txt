@@ -6,6 +6,14 @@ Directory description
 2. BoardWeb : intellij IDE 환경에서 tomcat 연결을 연습하기 위해 만든 파일
 2. BoardWeb : Files created to practice tomcat connections in an intelij IDE environment
 
+오류보고 :
+
+1
+spring에서 HomeController(spring4\BoardWeb\src\main\java\Controller\HomeController.java)를 이용하지 않는 문제가 일어났습니다.
+
+
+
+
 
 
 참고자료(Source From) : 
@@ -15,3 +23,7 @@ https://whitepaek.tistory.com/55
 
 BoardWeb
 https://velog.io/@hogwarts/IntelliJ-Spring-MVC-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0
+
+
+
+
